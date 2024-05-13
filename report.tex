@@ -80,10 +80,21 @@ Network anomaly detection, Machine Learning
 The primary objective of this project is to train various machine learning models for the classification of whether an activity on the network is a threat or not. The secondary objective of this project is to evaluate the machine learning models based on their performance, and computation time and cost in order to find the best model. This can be used to create a firewall application \cite{ucar2017analysis} that uses the built machine learning model.
 
 \section{Proposed methodology}
-We are planning to use the TRAbID dataset \cite{viegas2017toward} as it provides a relevant dataset for the problem, this can be subject to change. The TRAbID dataset is sufficiently large, with 44 feature columns, including classification, made up of generated network traffic data. Our methodology will be to first explore this dataset using tools such as Pandas, MatPlotLib, and Sci-Kit Learn. This includes tasks such as identifying correlations, normalizing values, and selecting important features. Following this, we will work on training a few different types of models in order to determine which models perform the best at distinguishing network threats. Models we plan on training are: Support Vector Machines, Logistic Regression, Naive Bayes, Random Forest, XGBoost, and K-Nearest Neighbors. These selected models can be subject to change. We will compare the models based on accuracy, precision and recall, and speed of classification.
+We are planning to use the TRAbID dataset \cite{viegas2017toward} as it provides a relevant dataset for the problem, this can be subject to change. The TRAbID dataset is sufficiently large, with 44 feature columns, including classification, made up of generated network traffic data. Our methodology will be to first explore this dataset using tools such as Pandas, MatPlotLib, and Sci-Kit Learn. This includes tasks such as identifying correlations, normalizing values, and selecting important features. Following this, we will work on training a few different types of models in order to determine which models perform the best at distinguishing network threats. Models we plan on training are: Support Vector Machines, Logistic Regression, Naive Bayes, Random Forest, and XGBoost. These selected models can be subject to change. We will compare the models based on accuracy, precision and recall, and speed of classification.
 
 \section{Literature review}
-Bagui et al. \cite{bagui2019using} explored the UNSW-NB15 dataset \cite{moustafa2015unsw} using a hybrid approach that used k-means clustering followed by decision trees or Naive Bayes. Bhati et al. \cite{bhati2022ensemble} used the KDDCUP99 dataset to explore the effectiveness of ensemble models such as AdaBoost and Random Forest. Viegas et al. \cite{viegas2017toward} generated the TRAbID dataset with the goal of providing a better dataset for training machine learning models. They trained on this dataset using the Naive Bayes and Decision Tree algorithms. Based on our short literature review among the listed papers and otherwise, there has not been a clear strive for creating a model with the goal of fast detection after training. We plan on furthering research in this regard by exploring the effectiveness of various machine learning techniques on the TRAbID dataset.
+Bagui et al. \cite{bagui2019using} explored the UNSW-NB15 dataset \cite{moustafa2015unsw} using a hybrid approach that used k-means clustering followed by decision trees or Naive Bayes. Using decision trees, they were able to achieve a 99\% accuracy rate. Bhati et al. \cite{bhati2022ensemble} used the KDDCUP99 dataset to explore the effectiveness of ensemble models such as AdaBoost and Random Forest. 
+
+Viegas et al. \cite{viegas2017toward} generated the TRAbID dataset with the goal of providing a better dataset for training machine learning models. They trained on this dataset using the Naive Bayes and Decision Tree algorithms. 
+
+Zhou and Yang  developed an ``immune algorithm'' for detecting network anamolies using SVM. They were able to find that using such an algorithm, they were able to get an accuracy of 94\% with a detection time of 27 seconds for the entire test suite.
+
+
+
+
+Based on our short literature review among the listed papers and otherwise, there has not been a clear strive for creating a model with the goal of fast detection after training. We plan on furthering research in this regard by exploring the effectiveness of various machine learning techniques on the TRAbID dataset.
+
+
 
 \section{Hypothesis}
 The anticipated results include improved organizational knowledge and awareness of the cyber threat landscape, allowing for improved readiness and response tactics. Furthermore, by adding to the body of knowledge on cybersecurity, these assessments hope to enhance defense systems and policies. The expected outcome of this research is to find a model that is able to quickly and accurately classify network traffic data. Future work based use cases on this research project would be to create a live network monitoring firewall application that can quickly run network traffic through a trained model and notify the user in case of a network based attack.
@@ -94,7 +105,8 @@ The anticipated results include improved organizational knowledge and awareness 
 
 \section{Modelling}
 \subsection{Designing benchmark}
-\subsection{model 1}
+\subsection{Naive Bayes}
+
 \subsection{model 2}
 \subsection{model 3}
 \subsection{model 4}

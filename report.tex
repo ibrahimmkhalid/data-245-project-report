@@ -180,7 +180,13 @@ The results seem as expected, where the model performs well on known and similar
 
 \subsubsection{Gaussian Naive Bayes}
 Gaussian Naive Bayes generally performs better on continuous data, especially that which follows the normal distribution. While the data is not necessarily normal, it is continuous due to the StandardScaler() that is applied for the benchmark function. Unlike ComplementNB(), GaussianNB() is able to use negative values, allowing it to follow the same preprocessing and benchmark tests as the other models. This makes it much easier to make a comparison in terms of overall performance. GaussianNB() has two main parameters: priors, which are the prior probabilties for the classes, and var\_smoothing, which is the portion of the largest variance of all features that is added to variances for stability. In this case, priors was ignored and hyperparameter tuning was only performed based on var\_smoothing. The parameter grid used was \{'var\_smoothing': np.logspace(0,-9, num=100)\}, which creates 100 numbers between 1 and 1e-9.
+
 Featured in Figure \ref{fig:gaus_nb_bench} are the results for Gaussian Naive Bayes,
+
+Featured in Figure \ref{table-gaussiannb-results} are the results for Gaussian Naive Bayes,
+% i might have gone overboard with the to_latex function in pandas, but check these
+\input{partial-tables/table-gaussiannb-results}
+
 % This one is the pretty one
 \begin{figure}
     \centering
@@ -203,6 +209,7 @@ The best performing test was using all the features with 95\% PCA.This used a va
 
 % Roc curve
 Roc curve stuff...
+% use \includegraphics{figures/Complement Naive Bayes_roc_all_small.png}
 
 % My conclusion stuff (the stuff below), or should we just put this in the actual conclusion    
 

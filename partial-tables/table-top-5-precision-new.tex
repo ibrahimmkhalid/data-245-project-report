@@ -1,0 +1,16 @@
+\begin{table}[!htb]
+\centering
+\begin{tabular}{rllr}
+\toprule
+Rank & Model & Pipeline & Precision \\
+\midrule
+1 & Random Forest & scaled & 1.000 \\
+2 & Random Forest & corr, scaled & 0.923 \\
+3 & Logistic Regression & scaled & 0.845 \\
+4 & Logistic Regression & corr, scaled & 0.822 \\
+5 & XGBClassifier & corr, scaled & 0.751 \\
+\bottomrule
+\end{tabular}
+\caption{Top 5 models by Precision on New data}
+\label{table-top-5-precision-new}
+\end{table}

@@ -1,0 +1,16 @@
+\begin{table}[!htb]
+\centering
+\begin{tabular}{rllr}
+\toprule
+Rank & Model & Pipeline & F1 \\
+\midrule
+1 & XGBClassifier & scaled & 1.000 \\
+2 & Random Forest & corr, scaled & 1.000 \\
+3 & Random Forest & scaled & 1.000 \\
+4 & XGBClassifier & corr, scaled & 1.000 \\
+5 & SVM & scaled & 0.997 \\
+\bottomrule
+\end{tabular}
+\caption{Top 5 models by F1 on Known data}
+\label{table-top-5-f1-known}
+\end{table}

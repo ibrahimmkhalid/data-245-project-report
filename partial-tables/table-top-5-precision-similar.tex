@@ -1,0 +1,16 @@
+\begin{table}[!htb]
+\centering
+\begin{tabular}{rllr}
+\toprule
+Rank & Model & Pipeline & Precision \\
+\midrule
+1 & Random Forest & scaled & 1.000 \\
+2 & Random Forest & corr, scaled & 1.000 \\
+3 & XGBClassifier & scaled & 0.999 \\
+4 & SVM & corr, PCA & 0.999 \\
+5 & XGBClassifier & corr, scaled & 0.999 \\
+\bottomrule
+\end{tabular}
+\caption{Top 5 models by Precision on Similar data}
+\label{table-top-5-precision-similar}
+\end{table}

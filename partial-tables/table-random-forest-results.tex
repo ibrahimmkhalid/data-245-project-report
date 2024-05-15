@@ -1,0 +1,29 @@
+\begin{table}[!htb]
+\centering
+\resizebox{\linewidth}{!}{\begin{tabular}{llrrrrr}
+\toprule
+ &  & Accuracy & Precision & Recall & F1 & Time (ms) \\
+Pipeline & Dataset &  &  &  &  &  \\
+\midrule
+\multirow[c]{3}{*}{scaled} & Known & 1.000 & 1.000 & 1.000 & 1.000 & 140.314 \\
+ & Similar & 0.987 & 1.000 & 0.968 & 0.984 & 242.981 \\
+ & New & 0.767 & 1.000 & 0.003 & 0.006 & 622.699 \\
+\cline{1-7}
+\multirow[c]{3}{*}{corr, scaled} & Known & 1.000 & 1.000 & 1.000 & 1.000 & 68.079 \\
+ & Similar & 0.989 & 1.000 & 0.971 & 0.985 & 111.215 \\
+ & New & 0.767 & 0.923 & 0.005 & 0.011 & 308.599 \\
+\cline{1-7}
+\multirow[c]{3}{*}{PCA} & Known & 0.994 & 0.992 & 0.995 & 0.993 & 157.932 \\
+ & Similar & 0.989 & 0.995 & 0.977 & 0.986 & 232.806 \\
+ & New & 0.767 & 0.578 & 0.012 & 0.023 & 525.660 \\
+\cline{1-7}
+\multirow[c]{3}{*}{corr, PCA} & Known & 0.997 & 0.996 & 0.997 & 0.996 & 84.760 \\
+ & Similar & 0.990 & 0.997 & 0.978 & 0.988 & 135.499 \\
+ & New & 0.767 & 0.629 & 0.006 & 0.012 & 272.315 \\
+\cline{1-7}
+\bottomrule
+\end{tabular}
+}
+\caption{Random Forest results}
+\label{table-random-forest-results}
+\end{table}

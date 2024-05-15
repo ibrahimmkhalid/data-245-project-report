@@ -1,0 +1,29 @@
+\begin{table}[!htb]
+\centering
+\resizebox{\linewidth}{!}{\begin{tabular}{llrrrrr}
+\toprule
+ &  & Accuracy & Precision & Recall & F1 & Time (ms) \\
+Pipeline & Dataset &  &  &  &  &  \\
+\midrule
+\multirow[c]{3}{*}{scaled} & Known & 0.998 & 0.997 & 0.997 & 0.997 & 518.730 \\
+ & Similar & 0.990 & 0.995 & 0.981 & 0.988 & 1037.263 \\
+ & New & 0.767 & 0.656 & 0.009 & 0.019 & 2984.307 \\
+\cline{1-7}
+\multirow[c]{3}{*}{corr, scaled} & Known & 0.996 & 0.997 & 0.993 & 0.995 & 362.891 \\
+ & Similar & 0.989 & 0.998 & 0.975 & 0.986 & 749.064 \\
+ & New & 0.766 & 0.383 & 0.003 & 0.006 & 2147.515 \\
+\cline{1-7}
+\multirow[c]{3}{*}{PCA} & Known & 0.997 & 0.996 & 0.997 & 0.996 & 689.647 \\
+ & Similar & 0.991 & 0.997 & 0.980 & 0.989 & 1514.054 \\
+ & New & 0.767 & 0.620 & 0.008 & 0.016 & 3798.192 \\
+\cline{1-7}
+\multirow[c]{3}{*}{corr, PCA} & Known & 0.996 & 0.999 & 0.993 & 0.996 & 428.190 \\
+ & Similar & 0.989 & 0.999 & 0.972 & 0.985 & 830.623 \\
+ & New & 0.766 & 0.586 & 0.004 & 0.009 & 2294.048 \\
+\cline{1-7}
+\bottomrule
+\end{tabular}
+}
+\caption{SVM results}
+\label{table-svm-results}
+\end{table}

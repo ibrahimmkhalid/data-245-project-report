@@ -1,0 +1,16 @@
+\begin{table}[!htb]
+\centering
+\begin{tabular}{rllr}
+\toprule
+Rank & Model & Pipeline & Recall \\
+\midrule
+1 & GaussianNB & PCA & 0.711 \\
+2 & GaussianNB & scaled & 0.268 \\
+3 & GaussianNB & corr, scaled & 0.251 \\
+4 & GaussianNB & corr, PCA & 0.186 \\
+5 & Logistic Regression & corr, scaled & 0.101 \\
+\bottomrule
+\end{tabular}
+\caption{Top 5 models by Recall on New data}
+\label{table-top-5-recall-new}
+\end{table}

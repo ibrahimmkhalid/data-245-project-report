@@ -1,0 +1,29 @@
+\begin{table}[!htb]
+\centering
+\resizebox{\linewidth}{!}{\begin{tabular}{llrrrrr}
+\toprule
+ &  & Accuracy & Precision & Recall & F1 & Time (ms) \\
+Pipeline & Dataset &  &  &  &  &  \\
+\midrule
+\multirow[c]{3}{*}{scaled} & Known & 0.993 & 0.990 & 0.995 & 0.992 & 6.337 \\
+ & Similar & 0.980 & 0.995 & 0.954 & 0.974 & 18.706 \\
+ & New & 0.774 & 0.845 & 0.044 & 0.084 & 36.033 \\
+\cline{1-7}
+\multirow[c]{3}{*}{corr, scaled} & Known & 0.990 & 0.983 & 0.993 & 0.988 & 11.030 \\
+ & Similar & 0.984 & 0.988 & 0.972 & 0.980 & 15.148 \\
+ & New & 0.785 & 0.822 & 0.101 & 0.181 & 24.301 \\
+\cline{1-7}
+\multirow[c]{3}{*}{PCA} & Known & 0.980 & 0.974 & 0.979 & 0.977 & 16.595 \\
+ & Similar & 0.983 & 0.983 & 0.972 & 0.978 & 22.989 \\
+ & New & 0.767 & 0.533 & 0.042 & 0.078 & 72.396 \\
+\cline{1-7}
+\multirow[c]{3}{*}{corr, PCA} & Known & 0.978 & 0.974 & 0.977 & 0.975 & 7.628 \\
+ & Similar & 0.982 & 0.981 & 0.973 & 0.977 & 13.880 \\
+ & New & 0.767 & 0.546 & 0.033 & 0.061 & 30.205 \\
+\cline{1-7}
+\bottomrule
+\end{tabular}
+}
+\caption{Logistic Regression results}
+\label{table-logistic-regression-results}
+\end{table}

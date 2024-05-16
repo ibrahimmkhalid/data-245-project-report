@@ -115,9 +115,99 @@ The anticipated results include improved organizational knowledge and awareness 
 
 \section{Data Process}
 % Should we ref the website we got it from
-The dataset was downloaded from the original source as `arff' files. These files were quite large consisting of nearly 28,000,000 rows. Moreover, there was a huge imbalance in the dataset with nearly 99.7\% of the entries being `normal' entries. In order to reduce the computational complexity of this project as well as fix the class imbalance, we used a shell script to reduce the dataset 
+% technically we are referencing the paper they asked to refer to if we used the dataset
+The dataset was downloaded from the original source as `arff' files. These files were quite large consisting of nearly 28,000,000 rows. Moreover, there was a huge imbalance in the dataset with nearly 99.7\% of the entries being `normal' entries. In order to reduce the computational complexity of this project as well as fix the class imbalance, we used a shell script to reduce the dataset. The results of this class re-balancing and data reduction can be seen in Table \ref{table-class-distribution}. The reduced files were saved as `csv' files locally for ease of use in data exploration and modelling. 
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{llrrr}
+         \toprule
+Class&   \multicolumn{2}{c}{Before Reduction}& \multicolumn{2}{c}{After Reduction}\\
+&  Normal& Attack& Normal&Attack\\
+% Dataset&  & & &\\
+\midrule
+Known & 28,618,341& 36,628& 48,432&36,628\\
+Similar & 28,477,883& 10,440& 15,969&10,440\\
+New & 28,391,902& 17,752& 58,138&17,752\\
+\bottomrule
+\end{tabular}
+    \caption{Class distribution before and after}
+    \label{table-class-distribution}
+\end{table}
 
 \section{Data Understanding and Exploration}
+The dataset consists of a number of features related to network traffic data as can be seen in ... We 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{figures//uploads/correlations.png}
+\end{figure}
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=1\linewidth]{figures//uploads/correlations.png}
+\end{figure*}
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{lr}
+\toprule
+Feature & correlation\\\midrule
+class&                    1.000000\\
+tcp\_sport&                0.376711\\
+first\_serv\_packet&        0.288401\\
+tcp\_fsyn&                 0.183862\\
+tcp\_ffyn&                 0.179369\\
+udp\_sport&                0.159150\\
+num\_rst\_dst\_src&          0.148479\\
+tcp\_furg&                 0.081623\\
+ip\_id&                    0.070370\\
+ip\_proto&                 0.068846\\
+tcp\_fpush&                0.068064\\
+udp\_chk&                  0.050838\\
+udp\_dport&                0.043169\\
+num\_syn\_fin\_dst\_src&      0.032562\\
+num\_syn\_src\_dst&          0.023503\\
+num\_fin\_src\_dst&          0.018179\\
+count\_fr\_dst\_src&         0.016557\\
+num\_syn\_fin\_src\_dst&      0.010139\\
+num\_pushed\_src\_dst&      -0.005405\\
+num\_pushed\_dst\_src&      -0.006834\\
+num\_fin\_dst\_src&         -0.008403\\
+num\_rst\_src\_dst&         -0.008925\\
+count\_serv\_src\_dst&      -0.010181\\
+ip\_checksum&             -0.015762\\
+num\_syn\_dst\_src&         -0.017306\\
+count\_fr\_src\_dst&        -0.018505\\
+first\_packet&            -0.032560\\
+num\_ack\_dst\_src&         -0.042007\\
+num\_ack\_src\_dst&         -0.055285\\
+count\_serv\_dst\_src&      -0.058866\\
+icmp\_type&               -0.076590\\
+tcp\_seq&                 -0.082221\\
+tcp\_frst&                -0.089140\\
+ip\_type&                 -0.098455\\
+icmp\_chk&                -0.106911\\
+icmp\_code&               -0.115398\\
+num\_bytes\_serv\_src\_dst&  -0.205258\\
+conn\_status&             -0.217683\\
+udp\_len&                 -0.244732\\
+fr\_length&               -0.249022\\
+ip\_len&                  -0.265645\\
+num\_bytes\_src\_dst&       -0.275082\\
+tcp\_dport&               -0.302774\\
+ip\_DF&                   -0.305169\\
+tcp\_fack&                -0.406649\\
+tcp\_ack&                 -0.456281\\
+num\_bytes\_serv\_dst\_src&  -0.520069\\
+num\_bytes\_dst\_src&       -0.535816\\
+\bottomrule
+    \end{tabular}
+    \caption{Caption}
+    \label{tab:my_label}
+\end{table}
+
+
 % For data undersstanding, we can prob have a quick paragraph describing the data
 
 % Potentially stuff like the null values and so on
@@ -140,12 +230,12 @@ For the modeling step, ComplementNB(), which is a version of MultinomialNB() tha
 
 \subsubsection{Complement Naive Bayes}
 Complement Naive Bayes is a variation of Multinomial Naive Bayes that uses the complement of each class to calculate weights. As a result, this makes this model more suitable for imbalanced datasets, such as the TRAbID dataset. Complement Naive Bayes has the following parameters: alpha, force\_alpha, fit\_prior, class\_prior, and norm. Alpha is the smoothing parameter, force\_alpha will set alpha to 1e-10 if it is too low, fit\_prior is only used in edge cases with a single classes in the data, class\_prior is the prior probabilities of the classes but is not used in this implementation, and norm performs a second normalization of the weights. The parameter grid is as follows: 
-% \{
-%     "alpha": [0.001, 0.01, 0.1, 1, 10, 100, 1000],
-%     "force\_alpha": [True, False],
-%     "fit\_prior": [True, False],
-%     "norm": [True, False],
-% \}.
+ \{
+     "alpha": [0.001, 0.01, 0.1, 1, 10, 100, 1000],
+     "force\_alpha": [True, False],
+     "fit\_prior": [True, False],
+     "norm": [True, False],
+ \}.
 
 % third party package for code formatting, we can use this for parameters
 % everything inside the begin...end will be printed as is, so dont need to escape underscores, etc
@@ -161,8 +251,6 @@ Complement Naive Bayes is a variation of Multinomial Naive Bayes that uses the c
 % The best performing params are all the same; featured in the table, but may have to explicity say bc the picture is small?
 Featured in Figure \ref{fig:comp_nb_bench} are the results from the benchmark function using Complement Naive Bayes model after being going through hyperparameter tuning.
 
-% Change later... lipsums just to create a lot of text; remove later
-%\lipsum[1-10]
 \begin{figure*}[!htb]
     \centering
     \includegraphics[width=\linewidth]{figures//naive_bayes/comp_nb_bench.png}
@@ -170,9 +258,6 @@ Featured in Figure \ref{fig:comp_nb_bench} are the results from the benchmark fu
     \caption{Complement Naive Bayes Benchmark}%ieee caption go on the bottom
     \label{fig:comp_nb_bench}
 \end{figure*}
-%\lipsum[1]
-
-%\lipsum[1-10]
 
 The results seem as expected, where the model performs well on known and similar attacks, while performing lackluster for new attacks. This test, however, had some issues. The original preprocessing used for the benchmark function used a StandardScaler() and PCA. However, these methods gave negative values, which cannot be used by this model. As a result, the scaling method was changed to MinMaxScaler() and PCA was omitted. But by doing so, the process became different, making comparison a little more difficult, hence why Gaussian Naive Bayes was utilized.
 
@@ -181,35 +266,23 @@ The results seem as expected, where the model performs well on known and similar
 \subsubsection{Gaussian Naive Bayes}
 Gaussian Naive Bayes generally performs better on continuous data, especially that which follows the normal distribution. While the data is not necessarily normal, it is continuous due to the StandardScaler() that is applied for the benchmark function. Unlike ComplementNB(), GaussianNB() is able to use negative values, allowing it to follow the same preprocessing and benchmark tests as the other models. This makes it much easier to make a comparison in terms of overall performance. GaussianNB() has two main parameters: priors, which are the prior probabilties for the classes, and var\_smoothing, which is the portion of the largest variance of all features that is added to variances for stability. In this case, priors was ignored and hyperparameter tuning was only performed based on var\_smoothing. The parameter grid used was \{'var\_smoothing': np.logspace(0,-9, num=100)\}, which creates 100 numbers between 1 and 1e-9.
 
-Featured in Figure \ref{fig:gaus_nb_bench} are the results for Gaussian Naive Bayes,
-
-Featured in Figure \ref{table-gaussiannb-results} are the results for Gaussian Naive Bayes,
+Featured in Table \ref{table-gaussiannb-results} are the results for Gaussian Naive Bayes,
 % i might have gone overboard with the to_latex function in pandas, but check these
 \input{partial-tables/table-gaussiannb-results}
 
-% This one is the pretty one
-\begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{figures//naive_bayes/gaus_nb_bench_pretty.png}
-    \caption{test}
-    \label{fig:enter-label}
-\end{figure}
-% Benchmark table
-% Thats the big one
-\begin{figure*}
-    \centering
-    \includegraphics[width=1\linewidth]{figures//naive_bayes/gaus_nb_bench.png}
-    \caption{Gaussian Naive Bayes Benchmark}
-    \label{fig:gaus_nb_bench}
-\end{figure*}
+Overall, this model still performed as expected, where the known and similar attacks data performed well while the new attacks performed worse. Based on what can be compared with ComplementNB(), the overall accuracies and computation time are quite comparable with each other. However, the precision to recall ratio is significantly different. For ComplementNB(), the precision is much greater than the recall, which implies that those models fail to differentiate the attack class well, but is normally correct when it does predict it. On the other hand, for GaussianNB(), the models were more balanced in terms of these metrics. The main difference stemmed from how the models performed on the new attacks.
 
-Overall, this model still performed as expected, where the known and similar attacks data performed well while the new attacks performed worse. Based on what can be compared with ComplementNB(), the overall accuracies and computation time are quite comparable with each other. However, the precision to recall ratio is much different. For ComplementNB(), the precision is much greater than the recall whereas for GaussianNB(), they were low but closer to each other. * add more *
-
-The best performing test was using all the features with 95\% PCA.This used a var\_smoothing of 4.328761281083053e-06. In terms of performance with known and similar attacks, it performed around the same, with F1 scores of 0.80096 and 0.76423 respectively. However, the new attacks drastically increased performance in terms of F1 score, achieving an F1 score of 0.49767, which is nearly double of those from the other tests. Despite having a slight accuracy drop, we believe that this is the best performing Naive Bayes model, mainly due to the class imbalance that exists in the data. The precision of the model is approximately the same as the other tests, but the recall is significantly higher, going from around 0.25 to 0.7, implying that it is identifying threats and non threats much better than the others tests.
+The best performing test was using all of the features with 95\% PCA.This test used a var\_smoothing of 4.328761281083053e-06. In terms of performance with known and similar attacks, it performed around the same, with F1 scores of 0.80096 and 0.76423 respectively. However, the new attacks drastically increased performance in terms of F1 score, achieving an F1 score of 0.49767, which is nearly double of those from the other tests. In terms of precision and recall, the precision of the model increased from around 0.3 to 0.38 while recall had massive increases, going from around 0.25 to 0.7. This means that this model Despite having a slight accuracy drop, we believe that this is the best performing Naive Bayes model, mainly due to the class imbalance that exists in the data. The precision of the model is approximately the same as the other tests, but the recall is significantly higher, going from around 0.25 to 0.7, implying that it is identifying threats and non threats much better than the others tests.
 
 % Roc curve
 Roc curve stuff...
 % use \includegraphics{figures/Complement Naive Bayes_roc_all_small.png}
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/Gaussian Naive Bayes_roc_all_small.png}
+    \caption{Gaussian Naive Bayes ROC Curve}
+    \label{fig:gaus_roc}
+\end{figure}
 
 % My conclusion stuff (the stuff below), or should we just put this in the actual conclusion    
 
@@ -218,12 +291,7 @@ Roc curve stuff...
 % Also, my best performing model is 95% PCA; the acc severely drops when using correlation 95% PCA. The correlation dropping was based on the known attack dataset. As a result, it is possible that features that were not important for known and similar attacks are very important for new attacks. Due to this, this process likely removed features that were important for new attacks.
 
 \subsection{Support Vector Machines}
-\begin{table*}[!htb]
-    \centering
-    \include{table-partials/svm-results}
-    \caption{Caption}
-    \label{tab:my_label}
-\end{table*}
+\input{partial-tables/table-svm-results}
 \subsection{model 3}
 \subsection{model 4}
 \subsection{XGBoost}

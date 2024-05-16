@@ -1,0 +1,37 @@
+\begin{table}[!htb]
+    \centering
+    \caption{Sorted correlation with target feature}
+    \label{table-sorted-correlation}
+    \resizebox{\linewidth}{!}{
+    \begin{tabular}{lrlr}
+\toprule
+Feature & correlation&Feature & correlation\\\midrule
+class&                    1.000000 & num\_syn\_dst\_src&         -0.017306\\
+\textbf{tcp\_sport}&                0.376711 & count\_fr\_src\_dst&        -0.018505\\
+\textbf{first\_serv\_packet}&        0.288401 & first\_packet&            -0.032560\\
+\textbf{tcp\_fsyn}&                 0.183862 & num\_ack\_dst\_src&         -0.042007\\
+\textbf{tcp\_ffyn}&                 0.179369 & num\_ack\_src\_dst&         -0.055285\\
+\textbf{udp\_sport}&                0.159150 & count\_serv\_dst\_src&      -0.058866\\
+\textbf{num\_rst\_dst\_src}&          0.148479 & icmp\_type&               -0.076590\\
+tcp\_furg&                 0.081623 & tcp\_seq&                 -0.082221\\
+ip\_id&                    0.070370 & tcp\_frst&                -0.089140\\
+ip\_proto&                 0.068846 & ip\_type&                 -0.098455\\
+tcp\_fpush&                0.068064 & \textbf{icmp\_chk}&                -0.106911\\
+udp\_chk&                  0.050838 & \textbf{icmp\_code}&               -0.115398\\
+udp\_dport&                0.043169 & \textbf{num\_bytes\_serv\_src\_dst}&  -0.205258\\
+num\_syn\_fin\_dst\_src&      0.032562 & \textbf{conn\_status}&             -0.217683\\
+num\_syn\_src\_dst&          0.023503 & \textbf{udp\_len}&                 -0.244732\\
+num\_fin\_src\_dst&          0.018179 & \textbf{fr\_length}&               -0.249022\\
+count\_fr\_dst\_src&         0.016557 & \textbf{ip\_len}&                  -0.265645\\
+num\_syn\_fin\_src\_dst&      0.010139 & \textbf{num\_bytes\_src\_dst}&       -0.275082\\
+num\_pushed\_src\_dst&      -0.005405 & \textbf{tcp\_dport}&               -0.302774\\
+num\_pushed\_dst\_src&      -0.006834 & \textbf{ip\_DF}&                   -0.305169\\
+num\_fin\_dst\_src&         -0.008403 & \textbf{tcp\_fack}&                -0.406649\\
+num\_rst\_src\_dst&         -0.008925 & \textbf{tcp\_ack}&                 -0.456281\\
+count\_serv\_src\_dst&      -0.010181 & \textbf{num\_bytes\_serv\_dst\_src}&  -0.520069\\
+ip\_checksum&             -0.015762 & \textbf{num\_bytes\_dst\_src}&       -0.535816\\
+\bottomrule
+    \end{tabular}
+    }
+\end{table}
+

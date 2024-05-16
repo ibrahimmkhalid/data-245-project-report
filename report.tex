@@ -25,7 +25,7 @@
 \usepackage{xcolor,soul,framed} %,caption
 
 \colorlet{shadecolor}{yellow}
-% \usepackage{color,soul}
+%\usepackage{color,soul}
 \usepackage[pdftex]{graphicx}
 \graphicspath{{../pdf/}{../jpeg/}}
 \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
@@ -47,13 +47,13 @@
 \usepackage{listings} % code blocks
 
 \lstset{
-  basicstyle={\small\ttfamily},
+  basicstyle={\footnotesize\ttfamily},
   breaklines=true,
   breakatwhitespace=true,
   tabsize=2
 }
 
-
+\renewcommand{\arraystretch}{1.3}
 %\bstctlcite{IEEE:BSTcontrol}
 
 
@@ -146,57 +146,20 @@ The first thing we need to understand about the data is how the known, similar, 
 \end{figure}
 
 Now that we know what dataset to use for what purpose, we began exploring the known dataset. There are 51 features in the dataset, all of which are listed in Table \ref{table-featurelist}
+\input{partial-tables/manual/table-featurelist}
 
 
-\begin{table}[!htb]
+One of the first things we noticed was that the columns `ip\_RF', `ip\_DF' and `ip\_offset' were completely empty. These columns were removed as they should not affect our results greatly. Next, we performed a correlation analysis to see which of these remaining features were strongly correlated with the target feature. The results of this analysis can be seen in Table \ref{table-sorted-correlation}. The features with a greater than 0.1 absolute correlation are highlighted in bold.
+\input{partial-tables/manual/table-sorted-correlation}
+
+For further understanding, we performed principal component analysis (PCA) on all of the features as well as only those features with an absolute correlation greater than 0.1. See Fig. \ref{fig:pca-all}. We found that when analyzing all the features present, we needed only 28 of the PCA transformed features to achieve 95\% cumulative explained variance. When analyzing only those features that had a greater than 0.1 absolute correlation, we needed only 10 of those PCA transformed features to achieve 95\% cumulative explained variance.
+
+\begin{figure}
     \centering
-    \caption{List of features}
-    \label{table-featurelist}
-    \begin{tabular}{>{\centering\arraybackslash}p{0.9\linewidth}}
-    \toprule
- `ip\_type', `ip\_len', `ip\_id', `ip\_offset', `ip\_RF', `ip\_DF', `ip\_MF', `ip\_proto', `ip\_checksum', `udp\_sport', `udp\_dport', `udp\_len', `udp\_chk', `icmp\_type', `icmp\_code', `icmp\_chk', `tcp\_sport', `tcp\_dport', `tcp\_seq', `tcp\_ack', `tcp\_ffyn', `tcp\_fsyn', `tcp\_frst', `tcp\_fpush', `tcp\_fack', `tcp\_furg', `fr\_length', `conn\_status', `count\_fr\_dst\_src', `count\_serv\_src\_dst', `num\_bytes\_src\_dst', `num\_bytes\_dst\_src', `num\_bytes\_serv\_dst\_src', `num\_pushed\_dst\_src', `num\_syn\_fin\_src\_dst', `num\_fin\_src\_dst', `num\_fin\_dst\_src', `num\_ack\_dst\_src', `num\_syn\_src\_dst', `num\_rst\_src\_dst', `num\_rst\_dst\_src', `first\_packet', `first\_serv\_packet', `class'\\
- \bottomrule
-    \end{tabular}
-\end{table}
-
-
-One of the first things we noticed was that the columns `ip\_RF', `ip\_DF' and `ip\_offset' were completely empty. These columns were removed as they should not affect our results greatly. Next, we performed a correlation analysis to see which of these remaining features were strongly correlated with the target feature. The results of this analysis can be seen in Table \ref{table-sorted-correlation}.
-
-
-\begin{table}[!htb]
-    \centering
-    \caption{Sorted correlation with target feature}
-    \label{table-sorted-correlation}
-    \begin{tabular}{lrlr}
-\toprule
-Feature & correlation&Feature & correlation\\\midrule
-class&                    1.000000 & num\_syn\_dst\_src&         -0.017306\\
-tcp\_sport&                0.376711 & count\_fr\_src\_dst&        -0.018505\\
-first\_serv\_packet&        0.288401 & first\_packet&            -0.032560\\
-tcp\_fsyn&                 0.183862 & num\_ack\_dst\_src&         -0.042007\\
-tcp\_ffyn&                 0.179369 & num\_ack\_src\_dst&         -0.055285\\
-udp\_sport&                0.159150 & count\_serv\_dst\_src&      -0.058866\\
-num\_rst\_dst\_src&          0.148479 & icmp\_type&               -0.076590\\
-tcp\_furg&                 0.081623 & tcp\_seq&                 -0.082221\\
-ip\_id&                    0.070370 & tcp\_frst&                -0.089140\\
-ip\_proto&                 0.068846 & ip\_type&                 -0.098455\\
-tcp\_fpush&                0.068064 & icmp\_chk&                -0.106911\\
-udp\_chk&                  0.050838 & icmp\_code&               -0.115398\\
-udp\_dport&                0.043169 & num\_bytes\_serv\_src\_dst&  -0.205258\\
-num\_syn\_fin\_dst\_src&      0.032562 & conn\_status&             -0.217683\\
-num\_syn\_src\_dst&          0.023503 & udp\_len&                 -0.244732\\
-num\_fin\_src\_dst&          0.018179 & fr\_length&               -0.249022\\
-count\_fr\_dst\_src&         0.016557 & ip\_len&                  -0.265645\\
-num\_syn\_fin\_src\_dst&      0.010139 & num\_bytes\_src\_dst&       -0.275082\\
-num\_pushed\_src\_dst&      -0.005405 & tcp\_dport&               -0.302774\\
-num\_pushed\_dst\_src&      -0.006834 & ip\_DF&                   -0.305169\\
-num\_fin\_dst\_src&         -0.008403 & tcp\_fack&                -0.406649\\
-num\_rst\_src\_dst&         -0.008925 & tcp\_ack&                 -0.456281\\
-count\_serv\_src\_dst&      -0.010181 & num\_bytes\_serv\_dst\_src&  -0.520069\\
-ip\_checksum&             -0.015762 & num\_bytes\_dst\_src&       -0.535816\\
-\bottomrule
-    \end{tabular}
-\end{table}
+    \includegraphics[width=1\linewidth]{figures//uploads/pca.png}
+    \caption{PCA analysis on all features and features with correlation greater than 0.1. 95\% cumulative explained variance line highlighted}
+    \label{fig:pca-all}
+\end{figure}
 
 
 % For data undersstanding, we can prob have a quick paragraph describing the data
@@ -221,15 +184,13 @@ For the modeling step, ComplementNB(), which is a version of MultinomialNB() tha
 
 \subsubsection{Complement Naive Bayes}
 Complement Naive Bayes is a variation of Multinomial Naive Bayes that uses the complement of each class to calculate weights. As a result, this makes this model more suitable for imbalanced datasets, such as the TRAbID dataset. Complement Naive Bayes has the following parameters: alpha, force\_alpha, fit\_prior, class\_prior, and norm. Alpha is the smoothing parameter, force\_alpha will set alpha to 1e-10 if it is too low, fit\_prior is only used in edge cases with a single classes in the data, class\_prior is the prior probabilities of the classes but is not used in this implementation, and norm performs a second normalization of the weights. The parameter grid is as follows: 
- \{
-     "alpha": [0.001, 0.01, 0.1, 1, 10, 100, 1000],
-     "force\_alpha": [True, False],
-     "fit\_prior": [True, False],
-     "norm": [True, False],
- \}.
+ % \{
+ %     "alpha": [0.001, 0.01, 0.1, 1, 10, 100, 1000],
+ %     "force\_alpha": [True, False],
+ %     "fit\_prior": [True, False],
+ %     "norm": [True, False],
+ % \}.
 
-% third party package for code formatting, we can use this for parameters
-% everything inside the begin...end will be printed as is, so dont need to escape underscores, etc
 \begin{lstlisting}
 {
     "alpha": [0.001, 0.01, 0.1, 1, 10, 100, 1000],
@@ -240,25 +201,23 @@ Complement Naive Bayes is a variation of Multinomial Naive Bayes that uses the c
 \end{lstlisting}
 
 % The best performing params are all the same; featured in the table, but may have to explicity say bc the picture is small?
-Featured in Figure \ref{fig:comp_nb_bench} are the results from the benchmark function using Complement Naive Bayes model after being going through hyperparameter tuning.
+Featured in Figure \ref{table-complement-results} are the results from the benchmark function using Complement Naive Bayes model after being going through hyperparameter tuning.
 
-\begin{figure*}[!htb]
-    \centering
-    \includegraphics[width=\linewidth]{figures//naive_bayes/comp_nb_bench.png}
+\input{partial-tables/table-complementnb-results}
+%\begin{figure*}[!htb]
+%    \centering
+%    \includegraphics[width=\linewidth]{figures//naive_bayes/comp_nb_bench.png}
     % maybe we can use roc curves instead? they can fit in a single column...?
-    \caption{Complement Naive Bayes Benchmark}%ieee caption go on the bottom
-    \label{fig:comp_nb_bench}
-\end{figure*}
+%    \caption{Complement Naive Bayes Benchmark}%ieee caption go on the bottom
+%    \label{fig:comp_nb_bench}
+%\end{figure*}
 
 The results seem as expected, where the model performs well on known and similar attacks, while performing lackluster for new attacks. This test, however, had some issues. The original preprocessing used for the benchmark function used a StandardScaler() and PCA. However, these methods gave negative values, which cannot be used by this model. As a result, the scaling method was changed to MinMaxScaler() and PCA was omitted. But by doing so, the process became different, making comparison a little more difficult, hence why Gaussian Naive Bayes was utilized.
 
 % Could show roc curve here
 
 \subsubsection{Gaussian Naive Bayes}
-Gaussian Naive Bayes generally performs better on continuous data, especially that which follows the normal distribution. While the data is not necessarily normal, it is continuous due to the StandardScaler() that is applied for the benchmark function. Unlike ComplementNB(), GaussianNB() is able to use negative values, allowing it to follow the same preprocessing and benchmark tests as the other models. This makes it much easier to make a comparison in terms of overall performance. GaussianNB() has two main parameters: priors, which are the prior probabilties for the classes, and var\_smoothing, which is the portion of the largest variance of all features that is added to variances for stability. In this case, priors was ignored and hyperparameter tuning was only performed based on var\_smoothing. The parameter grid used was \{'var\_smoothing': np.logspace(0,-9, num=100)\}, which creates 100 numbers between 1 and 1e-9.
-
-Featured in Table \ref{table-gaussiannb-results} are the results for Gaussian Naive Bayes,
-% i might have gone overboard with the to_latex function in pandas, but check these
+Gaussian Naive Bayes generally performs better on continuous data, especially that which follows the normal distribution. While the data is not necessarily normal, it is continuous due to the StandardScaler() that is applied for the benchmark function. Unlike ComplementNB(), GaussianNB() is able to use negative values, allowing it to follow the same preprocessing and benchmark tests as the other models. This makes it much easier to make a comparison in terms of overall performance. GaussianNB() has two main parameters: priors, which are the prior probabilties for the classes, and var\_smoothing, which is the portion of the largest variance of all features that is added to variances for stability. In this case, priors was ignored and hyperparameter tuning was only performed based on var\_smoothing. The parameter grid used was \{'var\_smoothing': np.logspace(0,-9, num=100)\}, which creates 100 numbers between 1 and 1e-9. Featured in Table \ref{table-gaussiannb-results} are the results for Gaussian Naive Bayes.
 \input{partial-tables/table-gaussiannb-results}
 
 Overall, this model still performed as expected, where the known and similar attacks data performed well while the new attacks performed worse. Based on what can be compared with ComplementNB(), the overall accuracies and computation time are quite comparable with each other. However, the precision to recall ratio is significantly different. For ComplementNB(), the precision is much greater than the recall, which implies that those models fail to differentiate the attack class well, but is normally correct when it does predict it. On the other hand, for GaussianNB(), the models were more balanced in terms of these metrics. The main difference stemmed from how the models performed on the new attacks.
@@ -282,13 +241,25 @@ Pictured in \ref{fig:gaus_roc} are the ROC curves for the known attacks, similar
 % Also, my best performing model is 95% PCA; the acc severely drops when using correlation 95% PCA. The correlation dropping was based on the known attack dataset. As a result, it is possible that features that were not important for known and similar attacks are very important for new attacks. Due to this, this process likely removed features that were important for new attacks.
 
 \subsection{Support Vector Machines}
+The results for SVM can be seen in Table \ref{table-svm-results}.
 \input{partial-tables/table-svm-results}
-\subsection{model 3}
-\subsection{model 4}
+\subsection{Logistic Regression}
+The results for Logistic Regression can be seen in Table \ref{table-logistic-regression-results}.
+\input{partial-tables/table-logistic-regression-results}
+\subsection{Random Forest}
+The results for Random Forest can be seen in Table \ref{table-random-forest-results}.
+\input{partial-tables/table-random-forest-results}
 \subsection{XGBoost}
 XGBoost is a popular supervised tree based algorithm that is popularly used in classification problems. This model is an example of an ensemble technique which follows the boosting principle. XGBoost is beneficial for several reasons. It tends to deliver a relatively high accuracy. It is also known for being very efficient when making predictions making them suitable for real time applications. XGBoost is not heavily impacted by outliers and is capable of handling both large and imbalanced datasets. The model is resistant to underfitting by default and has built-in parameters that can help to prevent overfitting. Along with the benefits, the model also has some drawbacks. 
 
+The results for Random Forest can be seen in Table \ref{table-xgbclassifier-results}.
+\input{partial-tables/table-xgbclassifier-results}
+
 \section{Results and comparison}
+The tables comparing best models in terms of F1 score can be seen in Table \ref{table-top-5-f1-new}.
+\input{partial-tables/table-top-5-f1-new}
+The tables comparing best models in terms of detection time can be seen in Table \ref{table-top-5-time-(ms)-new}.
+\input{partial-tables/table-top-5-time-(ms)-new}
 % Evaluation
 % Could just have all of the tables ibrahim made (best f1, precision , recall, time)
 % maybe we should just also show what we think is the best overall model

@@ -1,0 +1,22 @@
+\begin{table}[!htb]
+\caption{ComplementNB results}
+\label{table-complement-results}
+\centering
+\resizebox{\linewidth}{!}{\begin{tabular}{llrrrrr}
+\toprule
+ &  & Accuracy & Precision & Recall & F1  \\
+Pipeline & Dataset &  &  &  &  &  \\
+\midrule
+\multirow[c]{3}{*}{scaled} & Known & 0.940277 & 0.956870 & 0.903423 & 0.929379 \\
+ & Similar & 0.972131 & 0.969336 & 0.959866 & 0.964578  \\
+ & New & 0.794255 & 0.743730 & 0.183754 & 0.294697 \\
+\cline{1-7}
+\multirow[c]{3}{*}{corr, scaled} & Known & 0.944196 & 0.961817 & 0.907748 & 0.934001 \\
+ & Similar & 0.977508 & 0.975010 & 0.967912 & 0.971448  \\
+ & New & 0.796284 & 0.799373 & 0.172375 & 0.283596 \\
+
+\cline{1-7}
+\bottomrule
+\end{tabular}
+}
+\end{table}

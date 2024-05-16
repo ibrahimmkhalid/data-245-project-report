@@ -120,6 +120,8 @@ The dataset was downloaded from the original source as `arff' files. These files
 
 \begin{table}[!htb]
     \centering
+    \caption{Class distribution before and after reduction}
+    \label{table-class-distribution}
     \begin{tabular}{llrrr}
          \toprule
 Class&   \multicolumn{2}{c}{Before Reduction}& \multicolumn{2}{c}{After Reduction}\\
@@ -131,80 +133,69 @@ Similar & 28,477,883& 10,440& 15,969&10,440\\
 New & 28,391,902& 17,752& 58,138&17,752\\
 \bottomrule
 \end{tabular}
-    \caption{Class distribution before and after}
-    \label{table-class-distribution}
 \end{table}
 
 \section{Data Understanding and Exploration}
-The dataset consists of a number of features related to network traffic data as can be seen in ... We 
+The first thing we need to understand about the data is how the known, similar, and new attacks are related to eachother and how they should be used to train and create the model. Based off the paper by Viegas et al. we can see their approach was based off Fig \ref{figure-known-similar-new}.\cite{viegas2017toward} To use the dataset as designed, we modelled our evaluation methods similar to theirs.
 
-\begin{figure}
+\begin{figure}[!htb]
     \centering
-    \includegraphics[width=1\linewidth]{figures//uploads/correlations.png}
+    \includegraphics{figures/uploads/known_similar_new_attacks.jpg}
+    \caption{Dataset relations and model evaluations}
+    \label{figure-known-similar-new}
 \end{figure}
 
-\begin{figure*}
-    \centering
-    \includegraphics[width=1\linewidth]{figures//uploads/correlations.png}
-\end{figure*}
+Now that we know what dataset to use for what purpose, we began exploring the known dataset. There are 51 features in the dataset, all of which are listed in Table \ref{table-featurelist}
+
 
 \begin{table}[!htb]
     \centering
-    \begin{tabular}{lr}
+    \caption{List of features}
+    \label{table-featurelist}
+    \begin{tabular}{>{\centering\arraybackslash}p{0.9\linewidth}}
+    \toprule
+ `ip\_type', `ip\_len', `ip\_id', `ip\_offset', `ip\_RF', `ip\_DF', `ip\_MF', `ip\_proto', `ip\_checksum', `udp\_sport', `udp\_dport', `udp\_len', `udp\_chk', `icmp\_type', `icmp\_code', `icmp\_chk', `tcp\_sport', `tcp\_dport', `tcp\_seq', `tcp\_ack', `tcp\_ffyn', `tcp\_fsyn', `tcp\_frst', `tcp\_fpush', `tcp\_fack', `tcp\_furg', `fr\_length', `conn\_status', `count\_fr\_dst\_src', `count\_serv\_src\_dst', `num\_bytes\_src\_dst', `num\_bytes\_dst\_src', `num\_bytes\_serv\_dst\_src', `num\_pushed\_dst\_src', `num\_syn\_fin\_src\_dst', `num\_fin\_src\_dst', `num\_fin\_dst\_src', `num\_ack\_dst\_src', `num\_syn\_src\_dst', `num\_rst\_src\_dst', `num\_rst\_dst\_src', `first\_packet', `first\_serv\_packet', `class'\\
+ \bottomrule
+    \end{tabular}
+\end{table}
+
+
+One of the first things we noticed was that the columns `ip\_RF', `ip\_DF' and `ip\_offset' were completely empty. These columns were removed as they should not affect our results greatly. Next, we performed a correlation analysis to see which of these remaining features were strongly correlated with the target feature. The results of this analysis can be seen in Table \ref{table-sorted-correlation}.
+
+
+\begin{table}[!htb]
+    \centering
+    \caption{Sorted correlation with target feature}
+    \label{table-sorted-correlation}
+    \begin{tabular}{lrlr}
 \toprule
-Feature & correlation\\\midrule
-class&                    1.000000\\
-tcp\_sport&                0.376711\\
-first\_serv\_packet&        0.288401\\
-tcp\_fsyn&                 0.183862\\
-tcp\_ffyn&                 0.179369\\
-udp\_sport&                0.159150\\
-num\_rst\_dst\_src&          0.148479\\
-tcp\_furg&                 0.081623\\
-ip\_id&                    0.070370\\
-ip\_proto&                 0.068846\\
-tcp\_fpush&                0.068064\\
-udp\_chk&                  0.050838\\
-udp\_dport&                0.043169\\
-num\_syn\_fin\_dst\_src&      0.032562\\
-num\_syn\_src\_dst&          0.023503\\
-num\_fin\_src\_dst&          0.018179\\
-count\_fr\_dst\_src&         0.016557\\
-num\_syn\_fin\_src\_dst&      0.010139\\
-num\_pushed\_src\_dst&      -0.005405\\
-num\_pushed\_dst\_src&      -0.006834\\
-num\_fin\_dst\_src&         -0.008403\\
-num\_rst\_src\_dst&         -0.008925\\
-count\_serv\_src\_dst&      -0.010181\\
-ip\_checksum&             -0.015762\\
-num\_syn\_dst\_src&         -0.017306\\
-count\_fr\_src\_dst&        -0.018505\\
-first\_packet&            -0.032560\\
-num\_ack\_dst\_src&         -0.042007\\
-num\_ack\_src\_dst&         -0.055285\\
-count\_serv\_dst\_src&      -0.058866\\
-icmp\_type&               -0.076590\\
-tcp\_seq&                 -0.082221\\
-tcp\_frst&                -0.089140\\
-ip\_type&                 -0.098455\\
-icmp\_chk&                -0.106911\\
-icmp\_code&               -0.115398\\
-num\_bytes\_serv\_src\_dst&  -0.205258\\
-conn\_status&             -0.217683\\
-udp\_len&                 -0.244732\\
-fr\_length&               -0.249022\\
-ip\_len&                  -0.265645\\
-num\_bytes\_src\_dst&       -0.275082\\
-tcp\_dport&               -0.302774\\
-ip\_DF&                   -0.305169\\
-tcp\_fack&                -0.406649\\
-tcp\_ack&                 -0.456281\\
-num\_bytes\_serv\_dst\_src&  -0.520069\\
-num\_bytes\_dst\_src&       -0.535816\\
+Feature & correlation&Feature & correlation\\\midrule
+class&                    1.000000 & num\_syn\_dst\_src&         -0.017306\\
+tcp\_sport&                0.376711 & count\_fr\_src\_dst&        -0.018505\\
+first\_serv\_packet&        0.288401 & first\_packet&            -0.032560\\
+tcp\_fsyn&                 0.183862 & num\_ack\_dst\_src&         -0.042007\\
+tcp\_ffyn&                 0.179369 & num\_ack\_src\_dst&         -0.055285\\
+udp\_sport&                0.159150 & count\_serv\_dst\_src&      -0.058866\\
+num\_rst\_dst\_src&          0.148479 & icmp\_type&               -0.076590\\
+tcp\_furg&                 0.081623 & tcp\_seq&                 -0.082221\\
+ip\_id&                    0.070370 & tcp\_frst&                -0.089140\\
+ip\_proto&                 0.068846 & ip\_type&                 -0.098455\\
+tcp\_fpush&                0.068064 & icmp\_chk&                -0.106911\\
+udp\_chk&                  0.050838 & icmp\_code&               -0.115398\\
+udp\_dport&                0.043169 & num\_bytes\_serv\_src\_dst&  -0.205258\\
+num\_syn\_fin\_dst\_src&      0.032562 & conn\_status&             -0.217683\\
+num\_syn\_src\_dst&          0.023503 & udp\_len&                 -0.244732\\
+num\_fin\_src\_dst&          0.018179 & fr\_length&               -0.249022\\
+count\_fr\_dst\_src&         0.016557 & ip\_len&                  -0.265645\\
+num\_syn\_fin\_src\_dst&      0.010139 & num\_bytes\_src\_dst&       -0.275082\\
+num\_pushed\_src\_dst&      -0.005405 & tcp\_dport&               -0.302774\\
+num\_pushed\_dst\_src&      -0.006834 & ip\_DF&                   -0.305169\\
+num\_fin\_dst\_src&         -0.008403 & tcp\_fack&                -0.406649\\
+num\_rst\_src\_dst&         -0.008925 & tcp\_ack&                 -0.456281\\
+count\_serv\_src\_dst&      -0.010181 & num\_bytes\_serv\_dst\_src&  -0.520069\\
+ip\_checksum&             -0.015762 & num\_bytes\_dst\_src&       -0.535816\\
 \bottomrule
     \end{tabular}
-    \caption{Caption}
-    \label{tab:my_label}
 \end{table}
 
 
@@ -272,10 +263,10 @@ Featured in Table \ref{table-gaussiannb-results} are the results for Gaussian Na
 
 Overall, this model still performed as expected, where the known and similar attacks data performed well while the new attacks performed worse. Based on what can be compared with ComplementNB(), the overall accuracies and computation time are quite comparable with each other. However, the precision to recall ratio is significantly different. For ComplementNB(), the precision is much greater than the recall, which implies that those models fail to differentiate the attack class well, but is normally correct when it does predict it. On the other hand, for GaussianNB(), the models were more balanced in terms of these metrics. The main difference stemmed from how the models performed on the new attacks.
 
-The best performing test was using all of the features with 95\% PCA.This test used a var\_smoothing of 4.328761281083053e-06. In terms of performance with known and similar attacks, it performed around the same, with F1 scores of 0.80096 and 0.76423 respectively. However, the new attacks drastically increased performance in terms of F1 score, achieving an F1 score of 0.49767, which is nearly double of those from the other tests. In terms of precision and recall, the precision of the model increased from around 0.3 to 0.38 while recall had massive increases, going from around 0.25 to 0.7. This means that this model Despite having a slight accuracy drop, we believe that this is the best performing Naive Bayes model, mainly due to the class imbalance that exists in the data. The precision of the model is approximately the same as the other tests, but the recall is significantly higher, going from around 0.25 to 0.7, implying that it is identifying threats and non threats much better than the others tests.
+The best performing test was using all of the features with 95\% PCA.This test used a var\_smoothing of 4.328761281083053e-06. In terms of performance with known and similar attacks, it performed around the same, with F1 scores of 0.80096 and 0.76423 respectively. However, the new attacks drastically increased performance in terms of F1 score, achieving an F1 score of 0.49767, which is nearly double of those from the other tests. In terms of precision and recall, the precision of the model increased from around 0.3 to 0.38 while recall had massive increases, going from around 0.25 to 0.7. This means that this model is able to detect attacks better than the other models, but is prone to falsely flagging normal traffic. Despite having a slight accuracy drop, we believe that this is the best performing Naive Bayes model, mainly due to the class imbalance that exists in the data. The precision of the model is approximately the same as the other tests, but the recall is significantly higher, going from around 0.25 to 0.7, implying that it is identifying threats and non threats much better than the others tests.
 
 % Roc curve
-Roc curve stuff...
+Pictured in \ref{fig:gaus_roc} are the ROC curves for the known attacks, similar attacks, and new attacks for all of the tests. For the most part, each test has a similar curve. For known and similar attacks, each test almost has the exact same curve. However, for new attacks, slight differences can be seen.
 % use \includegraphics{figures/Complement Naive Bayes_roc_all_small.png}
 \begin{figure}
     \centering

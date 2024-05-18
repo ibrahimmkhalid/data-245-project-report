@@ -154,7 +154,7 @@ From our data understanding, it is clear that we can approach this problem via a
 
 The rest of this paper will look at how we used these different angles, or `pipelines', along with our selected models to find the answer to our problem. The pipeline that produces a dataset of all features scaled using the standard scaler will be called `\textit{scaled}'. The pipeline that produces a dataset of all those features which had an absolute correlation of 0.1 or more with the target feature and is scaled using the standard scaler will be called `\textit{corr, scaled}'. The pipeline that produces a dataset that explains 95\% of the variance in all features will be called `\textit{PCA}'. The pipeline that produces a dataset that explains 95\% of the variance of all those features which had an absolute correlation of 0.1 or more with the target feature will be called `\textit{corr, PCA}'.
 
-Since our proposed methodology tests the speed of detection,
+Since our proposed methodology is trying to find the best model in terms of detection time and detection reliability, it is important to design our modelling to reflect that. While it is straight forward to test the models in terms of various metrics like accuracy and F1 score, it is harder to test their effectiveness in terms of time to detect. We need to develop our models and test suite in such a way that it allows us to do this with ease.
 
 % For data undersstanding, we can prob have a quick paragraph describing the data
 
@@ -333,10 +333,9 @@ In this case, we used the XGBClassifier available in the xgboost library to trai
 
 \input{partial-tables/table-xgbclassifier-results}
 
-Based on the result, we can see that the model performed the best on the 'new' dataset through the correlation scaled pipeline. The best f1-score obtained was around 0.159. This result is better than some of the models, but still not as good in performance as others. This instance of the model on all versions training the 'new' data also had the fastest training time at around 122 milliseconds.
+Based on the result, we can see that the model performed the best on the `new' dataset through the correlation scaled pipeline. The best f1-score obtained was around 0.159. This result is better than some of the models, but still not as good in performance as others. This instance of the model on all versions training the `new' data also had the fastest training time at around 122 milliseconds.
 
-To obtain the best possible results for every test case, we utilized hyperparameter tuning using GridSearchCV to train the model using the best possible parameter combination. 
-The following parameter grid was utilized in to perform the hyperparameter tuning:
+To obtain the best possible results for every test case, we utilized hyperparameter tuning using GridSearchCV to train the model using the best possible parameter combination. The following parameter grid was utilized in to perform the hyperparameter tuning:
 
 \begin{lstlisting}
 {
@@ -366,28 +365,26 @@ Figure \ref{fig:xgboost_roc} provides the ROC curves showing the distribution of
     \label{fig:xgboost_roc}
 \end{figure}
 
-Based on the curves for 'new attacks', we can tell the model performed as expected. All the cases involving PCA performed worse than any of the scaled versions. The red curve representing the PCA with correlation pipeline shows more variance in results compared with the other cases. For every other dataset in each pipeline, the f1-score is never below 0.9. For every instance of the 'new' dataset, the result, again, appears to be the best in the pipeline involving scaled with correlation and also has the fastest computation time. For every other pipeline, the f1-score is below 0.05. XGBoost's overall performance was generally reasonable, but not as good as how Naive Bayes or Logistic Regression performed. 
+Based on the curves for `new attacks', we can tell the model performed as expected. All the cases involving PCA performed worse than any of the scaled versions. The red curve representing the PCA with correlation pipeline shows more variance in results compared with the other cases. For every other dataset in each pipeline, the f1-score is never below 0.9. For every instance of the `new' dataset, the result, again, appears to be the best in the pipeline involving scaled with correlation and also has the fastest computation time. For every other pipeline, the f1-score is below 0.05. XGBoost's overall performance was generally reasonable, but not as good as how Naive Bayes or Logistic Regression performed. 
 
 \section{Evaluating Results and comparing}
+
+Now that we have all the various models trained, we can run all models on the same system to perform a comparative benchmark. Since false positives and false negatives are both bad for our application, we will primarily compare the models using F1 score. At the same time, we also need to find the best model in terms of detection time. We will compare the models in these regards using the `New' dataset as this is most important dataset for making sure that the selected model performs well in the real world.
+
 The tables comparing best models in terms of F1 score can be seen in Table \ref{table-top-5-f1-new}. The best performing model in terms of F1 score was Gaussian Naive Bayes using all features with 95\% PCA.
 
 \input{partial-tables/table-top-5-f1-new}
+
 The tables comparing best models in terms of detection time can be seen in Table \ref{table-top-5-time-(ms)-new}. The best performing model in terms of speed was Logistic Regression using scaled features that had a correlation of greater than 0.1.
 
 \input{partial-tables/table-top-5-time-(ms)-new}
 
-In terms of both tables, Naive Bayes and Logistic Regression outperformed every other model. This could be due to their probabilistic nature.
+By looking at both of these tables, it is clear that both Logistic Regression and Gaussian Naive Bayes perform the best of all the models in this project. Gaussian Naive Bayes far exceeds all models in terms of F1 score, even when using any of the available pipelines. Logistic regression and Gaussian Naive Bayes are both equally represented in the top 5 in terms of detection time with all models approximately around 30ms.
 
-% Insert more maybe...
-
-
-
-% Evaluation
-% Could just have all of the tables ibrahim made (best f1, precision , recall, time)
-% maybe we should just also show what we think is the best overall model
+% In terms of both tables, Naive Bayes and Logistic Regression outperformed every other model. This could be due to their probabilistic nature.
 
 \section{Deployment}
-We have two potential deployment strategies in mind. First, an online hosted application using platforms such as Streamlit could be created for research purposes. Second, for a more real-world experiment, applications such as Wireshark could be used to obtain network traffic data, allowing us to create a firewall application.
+We have two potential deployment strategies in mind. First, an online hosted application using platforms such as Streamlit could be created for research purposes. Second, for a more real-world use-case, applications such as Wireshark could be used to obtain live network traffic data, allowing us to create a firewall application that runs on the user's system with the selected best model.
 
 % Jots for the "discussion" part
 % Our model needs to be updated every now and then

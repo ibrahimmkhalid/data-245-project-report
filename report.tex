@@ -76,7 +76,7 @@ Justin Wang%
 
 
 \begin{abstract}
-\lipsum[1]
+In our increasingly digital world, network security is paramount. This project aims to enhance threat detection by training various machine learning models to classify network activities as either attacks or normal. Using the TRAbID dataset we trained models including Support Vector Machines, Logistic Regression, Naive Bayes, Random Forest, and XGBoost. These models were evaluated based on various metrics including F1 score and detection time. Results indicated that Gaussian Naive Bayes performed best in terms of F1 score, while Logistic Regression was the fastest. However, many models exhibited overfitting to the known dataset, not performing well with new attack data. This project looks at the challenges in deploying robust threat detection systems and highlights the potential of models like Naive Bayes for such tasks. Limitations included dataset size constraints and computational resources.% Future work should address these limitations to improve model generalization and efficacy in real-world scenarios.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -93,7 +93,7 @@ Network anomaly detection, Machine Learning, Classification, Detection time
 
 \IEEEPARstart{I}{n} our ever increasing digital world, it is vital that we also have improved security over our networks. Based on the Cloudflare DDoS 2023 Q4 report \cite{cloudflare} and Verizon’s data breach report 2023 \cite{verizion}, there has been an increase in the number of cyber attacks, including network based attacks. By using live network data and classifying it as harmful or not, we can create a system that will improve the peace of mind of a user and allow them to use modern technology with confidence.
 
-The primary objective of this project is to train various machine learning models for the classification of whether an activity on the network is a threat or not. The secondary objective of this project is to evaluate the machine learning models based on their performance, and computation time and cost in order to find the best model. This can be used to create a firewall application \cite{ucar2017analysis} that uses the built machine learning model.
+The primary objective of this project is to train various machine learning models for the classification of whether an activity on the network is a threat or not. The secondary objective of this project is to evaluate the machine learning models based on their performance, and computation time and cost in order to find the best model. This can be used to create a firewall application that uses the built machine learning model.
 
 \section{Literature review}
 Bagui et al. explored the UNSW-NB15 dataset using a hybrid approach that used k-means clustering followed by decision trees or Naive Bayes. Using decision trees, they were able to achieve a 99\% accuracy rate. \cite{bagui2019using} Bhati et al. used the KDDCUP99 dataset to explore the effectiveness of ensemble models such as AdaBoost and Random Forest. \cite{bhati2022ensemble} 
@@ -384,7 +384,15 @@ By looking at both of these tables, it is clear that both Logistic Regression an
 % In terms of both tables, Naive Bayes and Logistic Regression outperformed every other model. This could be due to their probabilistic nature.
 
 \section{Deployment}
-We have two potential deployment strategies in mind. First, an online hosted application using platforms such as Streamlit could be created for research purposes. Second, for a more real-world use-case, applications such as Wireshark could be used to obtain live network traffic data, allowing us to create a firewall application that runs on the user's system with the selected best model.
+% We have two potential deployment strategies in mind. First, an online hosted application using platforms such as Streamlit could be created for research purposes. Second, for a more real-world use-case, applications such as Wireshark could be used to obtain live network traffic data, allowing us to create a firewall application that runs on the user's system with the selected best model.
+
+We have two potential deployment strategies for this project. First, we could make this project available online for research purposes. Second, we could select the `best' model from this project and make it available as an end user firewall application.
+
+For the first possible deployment solution, we can host all model pickle files to platforms such as HuggingFace. The use case for this deployment solution is that it will allow other researchers and developers to use our models when performing studies. These online platforms will allow easy scaling to a vast number of users across the world as long as the compute is available. One drawback to this approach is that there would be a continuous cost to the account owners.
+
+For the second approach, we can create a user application in Python that is installed to the user's network. This application will come bundled with the best model from this study, Gaussian Naive Bayes, and will apply the best pipeline to live network traffic. This live network traffic will be evaluated by the model and will alert the user in case of detection of malicious network activity. Scaling this will be relatively simple as each user will need to download and install the application, only providing their own computation resources.
+
+For either of these deployment strategies, we would first need to improve the models and provide the model saved to disk. This can be done with the \lstinline{pickle} package in Python.
 
 % Jots for the "discussion" part
 % Our model needs to be updated every now and then

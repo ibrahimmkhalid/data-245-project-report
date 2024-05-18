@@ -76,7 +76,7 @@ Justin Wang%
 
 
 \begin{abstract}
-one sentence on problem, couple sentences on process, one or two sentences with the results
+\lipsum[1]
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -102,7 +102,7 @@ Zhou and Yang  developed an ``immune algorithm'' for detecting network anamolies
 
 Tavallaee et al. developed multiple machine learning models trained on the KDDCUP99 dataset, including Random Forest, Naive Bayes, and SVM. They were able to get accuracies of 92.8\%, 81.7\%, and 65.1\%, respectively. \cite{tavallaee2009detailed}
 
-Viegas et al. generated the TRAbID dataset with the goal of providing a better dataset for training machine learning models. They trained on this dataset using the Naive Bayes and Decision Tree algorithms. \cite{viegas2017toward}
+Viegas et al. generated the TRAbID dataset with the goal of providing a better dataset for training machine learning models. They used a novel approach of using various datasets with differing levels of similarity. They trained on this dataset using the Naive Bayes and Decision Tree algorithms. \cite{viegas2017toward}
 
 Based on our short literature review among the listed papers and otherwise, there has not been a clear strive for creating a model with the goal of fast detection after training. We plan on furthering research in this regard by exploring the effectiveness of various machine learning techniques on the TRAbID dataset.
 
@@ -350,7 +350,23 @@ The following parameter grid was utilized in to perform the hyperparameter tunin
 
 The max\_depth parameter identifies the maximum depth of the tree. It controls the maximum number of nodes the exist in the tree from the root to the leaf node. This parameter is responsible for the complexity of the model. If the max\_depth value is set to being too high, there is the risk of overfitting. The higher the depth, the longer it will take for the model to train.
 
-The n\_estimators focuses on the number of trees to built or added to the model behind the scenes. 
+The n\_estimators focuses on the number of trees built or added to the model behind the scenes. Every subsequent tree learns from the previous trees mistakes. This higher the number of estimators, the more complex the model becomes. If the number of trees is too high, it can cause overfitting. The speed at which the model can train and predict the results also gets slower if the n\_estimators is too high. 
+
+The learning\_rate is responsible for scaling the weights to determine the step size to take in each boosting round. It determines how quickly the model converges to its optimal point. Typically a lower learning rate will require more iterations for the model to reach convergence. The size of the learning\_rate can impact the accuracy of the model. Typically if there are a high number of n\_estimators, then a lower learning rate yields to a model generalizing better and yielding to more accurate results while also reducing the risk of overfitting. 
+
+The gamma parameter represents the minimum loss reduction needed for a split to occur at a leaf node. Typically the higher the gamma value, the more the tree pruning there is. This prevents any unnecessary splits from, occurring. Increasing gamma also reduces the model complexity which can help reduce the risks of overfitting. Gamma acts as the regularization parameter in XGBoost which works to prevent overfitting from occurring. 
+
+The scale\_pos\_weight addresses the balance between positive and negative classes. In other words, it handles class imbalance issues in a dataset with binary classification. Using this parameter can help to increase the accuracy or f1-score and try to prevent super skewed results from being obtained if the data is imbalanced. 
+
+Figure \ref{fig:xgboost_roc} provides the ROC curves showing the distribution of classification for all datasets.
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/XGBoost_roc_all_small.png}
+    \caption{ROC curves for XGBoost}
+    \label{fig:xgboost_roc}
+\end{figure}
+
+Based on the curves for 'new attacks', we can tell the model performed as expected. All the cases involving PCA performed worse than any of the scaled versions. The red curve representing the PCA with correlation pipeline shows more variance in results compared with the other cases. For every other dataset in each pipeline, the f1-score is never below 0.9. For every instance of the 'new' dataset, the result, again, appears to be the best in the pipeline involving scaled with correlation and also has the fastest computation time. For every other pipeline, the f1-score is below 0.05. XGBoost's overall performance was generally reasonable, but not as good as how Naive Bayes or Logistic Regression performed. 
 
 \section{Evaluating Results and comparing}
 The tables comparing best models in terms of F1 score can be seen in Table \ref{table-top-5-f1-new}. The best performing model in terms of F1 score was Gaussian Naive Bayes using all features with 95\% PCA.

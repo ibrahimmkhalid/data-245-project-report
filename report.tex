@@ -1,37 +1,8 @@
-%
-% IEEE Transactions on Microwave Theory and Techniques example
-% Tibault Reveyrand - http://www.microwave.fr
-%
-% http://www.microwave.fr/LaTeX.html
-% ---------------------------------------
-
-
-
-% ================================================
-% Please HIGHLIGHT the new inputs such like this :
-% Text :
-%  \hl{comment}
-% Aligned Eq. 
-% \begin{shaded}
-% \end{shaded}
-% ================================================
-
-
-
 \documentclass[journal]{IEEEtran}
-
-%\usepackage[retainorgcmds]{IEEEtrantools}
-%\usepackage{bibentry}  
-\usepackage{xcolor,soul,framed} %,caption
-
-\colorlet{shadecolor}{yellow}
-%\usepackage{color,soul}
 \usepackage[pdftex]{graphicx}
 \graphicspath{{../pdf/}{../jpeg/}}
 \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
 \usepackage[cmex10]{amsmath}
-%Mathabx do not work on ScribTex => Removed
-%\usepackage{mathabx}
 \usepackage{array}
 \usepackage{mdwmath}
 \usepackage{mdwtab}
@@ -53,8 +24,6 @@
 }
 
 \renewcommand{\arraystretch}{1.25}
-%\bstctlcite{IEEE:BSTcontrol}
-
 
 %=== TITLE & AUTHORS ====================================================================
 \begin{document}
@@ -76,7 +45,7 @@ Justin Wang%
 
 
 \begin{abstract}
-In our increasingly digital world, network security is paramount. This project aims to enhance threat detection by training various machine learning models to classify network activities as either attacks or normal. Using the TRAbID dataset we trained models including Support Vector Machines, Logistic Regression, Naive Bayes, Random Forest, and XGBoost. These models were evaluated based on various metrics including F1 score and detection time. Results indicated that Gaussian Naive Bayes performed best in terms of F1 score, while Logistic Regression was the fastest. However, many models exhibited overfitting to the known dataset, not performing well with new attack data. This project looks at the challenges in deploying robust threat detection systems and highlights the potential of models like Naive Bayes for such tasks. Limitations included dataset size constraints and computational resources.% Future work should address these limitations to improve model generalization and efficacy in real-world scenarios.
+In our increasingly digital world, network security is paramount. This project aims to enhance threat detection by training various machine learning models to classify network activities as either attacks or normal. Using the TRAbID dataset we trained models including Support Vector Machines, Logistic Regression, Naive Bayes, Random Forest, and XGBoost. These models were evaluated based on various metrics including F1 score and detection time. Results indicated that Gaussian Naive Bayes performed best in terms of F1 score, while Logistic Regression was the fastest. However, many models exhibited overfitting to the known dataset, not performing well with new attack data. This project looks at the challenges in deploying robust threat detection systems and highlights the potential of models like Naive Bayes for such tasks. Limitations included dataset size constraints and computational resources.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -109,9 +78,6 @@ Based on our short literature review among the listed papers and otherwise, ther
 \section{Proposed methodology}
 We are planning to use the TRAbID dataset \cite{viegas2017toward} as it provides a relevant dataset for the problem, this can be subject to change. The TRAbID dataset is sufficiently large, with 51 feature columns, including classification, made up of generated network traffic data. Our methodology will be to first explore this dataset using tools such as Pandas, MatPlotLib, and Sci-Kit Learn. This includes tasks such as identifying correlations, normalizing values, and selecting important features. Following this, we will work on training a few different types of models in order to determine which models perform the best at distinguishing network threats. Models we plan on training are: Support Vector Machines, Logistic Regression, Naive Bayes, Random Forest, and XGBoost. These selected models can be subject to change. We will compare the models based on accuracy, precision and recall, and speed of classification. The goal of this project is to find a model that, when deployed in a real life scenario, best performs analysis of raw network data and classifies it as `normal' or `attack' in terms of detection time and detection reliability.
 
-% \subsection{Hypothesis}
-% The anticipated results include improved organizational knowledge and awareness of the cyber threat landscape, allowing for improved readiness and response tactics. Furthermore, by adding to the body of knowledge on cybersecurity, these assessments hope to enhance defense systems and policies. The expected outcome of this research is to find a model that is able to quickly and accurately classify network traffic data. Future work based use cases on this research project would be to create a live network monitoring firewall application that can quickly run network traffic through a trained model and notify the user in case of a network based attack.
-
 \section{Data Understanding and Exploration}
 \label{data-understanding-and-exploation}
 The dataset was downloaded from the original source as `arff' files. These files were quite large consisting of nearly 28,000,000 rows. Moreover, there was a huge imbalance in the dataset with nearly 99.7\% of the entries being `normal' entries. The exact numbers can be seen in Table \ref{table-class-distribution}.
@@ -134,7 +100,6 @@ Now that we know what dataset to use for what purpose, we began exploring the kn
 
 \input{partial-tables/manual/table-featurelist}
 
-
 One of the first things we noticed was that the columns `ip\_RF', `ip\_DF' and `ip\_offset' were completely empty. These columns were removed as they should not affect our results greatly. Next, we performed a correlation analysis to see which of these remaining features were strongly correlated with the target feature. The results of this analysis can be seen in Table \ref{table-sorted-correlation}. The features with a greater than 0.1 absolute correlation are highlighted in bold.
 
 \input{partial-tables/manual/table-sorted-correlation}
@@ -155,16 +120,6 @@ From our data understanding, it is clear that we can approach this problem via a
 The rest of this paper will look at how we used these different angles, or `pipelines', along with our selected models to find the answer to our problem. The pipeline that produces a dataset of all features scaled using the standard scaler will be called `\textit{scaled}'. The pipeline that produces a dataset of all those features which had an absolute correlation of 0.1 or more with the target feature and is scaled using the standard scaler will be called `\textit{corr, scaled}'. The pipeline that produces a dataset that explains 95\% of the variance in all features will be called `\textit{PCA}'. The pipeline that produces a dataset that explains 95\% of the variance of all those features which had an absolute correlation of 0.1 or more with the target feature will be called `\textit{corr, PCA}'.
 
 Since our proposed methodology is trying to find the best model in terms of detection time and detection reliability, it is important to design our modelling to reflect that. While it is straight forward to test the models in terms of various metrics like accuracy and F1 score, it is harder to test their effectiveness in terms of time to detect. We need to develop our models and test suite in such a way that it allows us to do this with ease.
-
-% For data undersstanding, we can prob have a quick paragraph describing the data
-
-% Potentially stuff like the null values and so on
-% correlation
-% VIF
-% PCA
-
-% based on rubric, we also may need explanations about the relationships between the EDA results and our problem statement
-% Rubric has a data preperation/preprocessing step; should we shoehorn it into this since our reasoning is also here, or should we make a new section?
 
 \section{Modelling}
 
@@ -196,7 +151,7 @@ Based on this code and the problem at hand, we developed the project architectur
 \end{figure*}
 
 \subsection{Naive Bayes}
-% Probably can include how naive bayes works, showing equations and what not
+
 Naive Bayes is a supervised learning technique that is based on the Naive Bayes theorem. Unlike the other models in this report (SVM, Logistic Regression, and the tree based models), Naive Bayes is considered as a generative learning algorithm, focusing to model the distribution of inputs of a given class rather than learning which features are most important for discrimination. Some advantages of Naive Bayes include its simplicity and efficiency, the ability to handle high dimensional data, and its scalability. Some disadvantages include its assumption of conditional independence which causes to to be unrealistic, as well as its subjectability to the ``Zero Frequency'', which occurs when a feature does not exist in the training, causing the model to only predict zero.
 
 For the modeling step, ComplementNB(), which is a version of MultinomialNB() that was designed to correct some its severe assumptions and works well with imbalanced data, as well as GaussianNB() was used. Additionally, hyperparameter tuning using GridSearchCV was utilized in order to improve results. ComplementNB() and GaussianNB() have different parameters, so they will be gone over in their respective sections.
@@ -213,7 +168,6 @@ Complement Naive Bayes is a variation of Multinomial Naive Bayes that uses the c
 }
 \end{lstlisting}
 
-% The best performing params are all the same; featured in the table, but may have to explicity say bc the picture is small?
 The best performing parameters for each test were the same for each model: 
 
 \begin{lstlisting}
@@ -227,13 +181,6 @@ The best performing parameters for each test were the same for each model:
 Featured in Fig. \ref{table-complement-results} are the results from the benchmark function using Complement Naive Bayes model after being going through hyperparameter tuning.
 
 \input{partial-tables/table-complementnb-results}
-%\begin{figure*}[!htb]
-%    \centering
-%    \includegraphics[width=\linewidth]{figures//naive_bayes/comp_nb_bench.png}
-    % maybe we can use roc curves instead? they can fit in a single column...?
-%    \caption{Complement Naive Bayes Benchmark}%ieee caption go on the bottom
-%    \label{fig:comp_nb_bench}
-%\end{figure*}
 
 The results seem as expected, where the model performs well on known and similar attacks, while performing lackluster for new attacks. The best overall model for this test was on the scaled data, achieving an F1 score of 0.294697. This test, however, had some issues. The original preprocessing used for the benchmark function used a StandardScaler() and PCA. However, these methods gave negative values, which cannot be used by this model. As a result, the scaling method was changed to MinMaxScaler() and PCA was omitted. But by doing so, the process became different, making comparison a little more difficult, hence why Gaussian Naive Bayes was utilized to create tests that were more inline with the other models.
 
@@ -246,7 +193,6 @@ This model still follows the trend of doing well on known and similar attacks wh
 
 The best performing test was using all of the features with 95\% PCA. This test used a var\_smoothing of 4.3287e-06. In terms of performance with known and similar attacks, it performed around the same, with F1 scores of 0.80096 and 0.76423 respectively. However, the new attacks drastically increased performance in terms of F1 score, achieving an F1 score of 0.49767, which is nearly double of those from the other tests. In terms of precision and recall, the precision of the model increased from around 0.3 to 0.38 while recall had massive increases, going from around 0.25 to 0.7. This means that this model is able to detect attacks better than the other models, but is prone to falsely flagging normal traffic. Despite having a slight accuracy drop, we believe that this is the best performing Naive Bayes model, mainly due to the class imbalance that exists in the data that skews accuracy. The precision of the model is approximately the same as the other tests, but the recall is significantly higher, going from around 0.25 to 0.7, implying that it is identifying threats and non threats much better than the others tests. For a problem like this, identifying problems, rather than being cautious, is imperative. Pictured in Fig. \ref{fig:gaus_roc} are the ROC curves for the known attacks, similar attacks, and new attacks for all of the tests using the GaussianNB() model. 
 
-% use \includegraphics{figures/Complement Naive Bayes_roc_all_small.png}
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{figures/Gaussian Naive Bayes_roc_all_small.png}
@@ -306,13 +252,15 @@ The results for Logistic Regression can be seen in Table \ref{table-logistic-reg
 \end{figure}
 
 
-The ``Known attacks'' ROC curves are almost perfect in this case; TPR is almost 1. 0 FPR is kept low. The preprocessing steps or approaches, like ``Scaled'', ``Scaled and $|corr| > 0. 1$'', ``PCA'' ``PCA with $|corr| > 0.1$'', and ``No skill'' are all listed on the left side of the legend. Just like for ``Known attacks'', ``Similar attacks'' ROC curves are very accurate as well. The TPR for all techniques is extremely high, implying that the method can reliably detect attacks which are similar to the ones that are already found. For the new attacks we can see that there is more variation with performance which is lower that known and similar attacks. ``Scaled'' and ``Scaled and $|corr| > 0.1$'' methods perform better and show a high TPR at lower FPR when compared to ``PCA'' and ``PCA with $[corr] > 0.1$''.
+The ``Known attacks'' ROC curves are almost perfect in this case; TPR is almost 1. 0 FPR is kept low. The preprocessing steps or approaches, like ``Scaled'', ``Scaled and $|corr| > 0. 1$'', ``PCA'' ``PCA with $|corr| > 0.1$'', and ``No skill'' are all listed on the left side of the legend. Just like for ``Known attacks'', ``Similar attacks'' ROC curves are very accurate as well. The TPR for all techniques is extremely high, implying that the method can reliably detect attacks which are similar to the ones that are already found. For the new attacks we can see that there is more variation with performance which is lower that known and similar attacks. ``Scaled'' and ``Scaled and $|corr| > 0.1$'' methods perform better and show a high TPR at lower FPR when compared to ``PCA'' and ``PCA with $|corr| > 0.1$''.
 
 
 
 
 \input{partial-tables/table-logistic-regression-results}
 
+The scaled pipeline shows us that there is a high performance on known and similar datasets with accuracy's 0.993 and 0.990.
+however we can see a performance drop on the new dataset with an accuracy of 0.774. This shows us that the model is struggling with generalization in spite of strong performance on familiar data. The corr, scaled pipeline shows us that it is performing very well on similar and known attacks with accuracy's of 0.994 and 0.985. We can see a slight improvement for the new attacks dataset with the accuracy of 0.788 which suggests that correlation feature selection  might enhance accuracy when compared to single scaling. The PCA pipeline is performing well on known and similar attacks datasets with 0.994 and 0.987 as the accuracy's. The performance on the new attacks has dropped to 0.767 which suggests that PCA struggles to identify the new attacks. The corr, PCA pipeline shows high performance on Known (0.993) and Similar (0.978) datasets. However, it performs the worst on the new attacks with an accuracy of 0.767. The scaled and corr, scaled pipelines are running at a faster rate with time ranging from 6 to 38 ms. The PCA and corr, PCA pipelines are taking a longer time to run which is between 15 to 34 ms. This tells us that PCA might need complex computations and does not help significantly with the model on new data. We can see that the precision and recall drops significantly for new attacks which indicates that it is struggling to identify true positives. It also consists of lowest precision of 0.546 which lowest when compared to known and similar attacks.
 
 \subsection{Random Forest}
 
@@ -369,6 +317,7 @@ The gamma parameter represents the minimum loss reduction needed for a split to 
 The scale\_pos\_weight addresses the balance between positive and negative classes. In other words, it handles class imbalance issues in a dataset with binary classification. Using this parameter can help to increase the accuracy or f1-score and try to prevent super skewed results from being obtained if the data is imbalanced. 
 
 Figure \ref{fig:xgboost_roc} provides the ROC curves showing the distribution of classification for all datasets.
+
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{figures/XGBoost_roc_all_small.png}
@@ -392,10 +341,8 @@ The tables comparing best models in terms of detection time can be seen in Table
 
 By looking at both of these tables, it is clear that both Logistic Regression and Gaussian Naive Bayes perform the best of all the models in this project. Gaussian Naive Bayes far exceeds all models in terms of F1 score, even when using any of the available pipelines. Logistic regression and Gaussian Naive Bayes are both equally represented in the top 5 in terms of detection time with all models approximately around 30ms.
 
-% In terms of both tables, Naive Bayes and Logistic Regression outperformed every other model. This could be due to their probabilistic nature.
 
 \section{Deployment}
-% We have two potential deployment strategies in mind. First, an online hosted application using platforms such as Streamlit could be created for research purposes. Second, for a more real-world use-case, applications such as Wireshark could be used to obtain live network traffic data, allowing us to create a firewall application that runs on the user's system with the selected best model.
 
 We have two potential deployment strategies for this project. First, we could make this project available online for research purposes. Second, we could select the `best' model from this project and make it available as an end user firewall application.
 
@@ -404,13 +351,6 @@ For the first possible deployment solution, we can host all model pickle files t
 For the second approach, we can create a user application in Python that is installed to the user's network. This application will come bundled with the best model from this study, Gaussian Naive Bayes, and will apply the best pipeline to live network traffic. This live network traffic will be evaluated by the model and will alert the user in case of detection of malicious network activity. Scaling this will be relatively simple as each user will need to download and install the application, only providing their own computation resources.
 
 For either of these deployment strategies, we would first need to improve the models and provide the model saved to disk. This can be done with the \lstinline{pickle} package in Python.
-
-% Jots for the "discussion" part
-% Our model needs to be updated every now and then
-% Model has to be fast enough to handle a stream of real time data
-% idk could use a platform like kafka or something...
-% some bs about parallelization to allow for faster computations idk
-
 
 \section{Conclusion}
 
